@@ -2,13 +2,12 @@ import { useState, useEffect } from "react";
 
 const Carousel = ({ title, items = [], onCardClick }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const itemsPerPage = 8; // Adjust as needed
+  const itemsPerPage = 8;
 
-  // Auto-slide every 3 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       nextSlide();
-    }, 3000);
+    }, 8000);
     return () => clearInterval(interval);
   }, [currentIndex]);
 
@@ -26,11 +25,9 @@ const Carousel = ({ title, items = [], onCardClick }) => {
 
   return (
     <div className="p-6 relative w-full mx-auto">
-      {/* Title */}
       <h2 className="text-3xl font-extrabold mb-6 text-white">{title}</h2>
 
       <div className="relative flex items-center group">
-        {/* Left Navigation Button */}
         <button
           onClick={prevSlide}
           className="absolute left-2 z-20 bg-gray-900 hover:bg-gray-800 text-white text-2xl p-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300"
@@ -38,7 +35,6 @@ const Carousel = ({ title, items = [], onCardClick }) => {
           &#10094;
         </button>
 
-        {/* Carousel Items */}
         <div className="flex space-x-6 overflow-hidden w-full">
           {items.length > 0 ? (
             items
@@ -48,12 +44,16 @@ const Carousel = ({ title, items = [], onCardClick }) => {
                   0,
                   Math.max(0, currentIndex + itemsPerPage - items.length)
                 )
-              ) // Wrap items for infinite loop
+              )
               .map((anime, index) => (
                 <div
                   key={index}
-                  className="w-48 cursor-pointer transform hover:scale-110 transition duration-300"
-                  onClick={() => onCardClick(anime)}
+                  className="w-48 cursor-pointer transform hover:scale-110 transition duration-300 ml-4 pb-1.5"
+                  onClick={(e) => {
+                    e.stopPropagation();
+
+                    onCardClick(anime);
+                  }}
                 >
                   <img
                     src={anime.image}
@@ -72,7 +72,6 @@ const Carousel = ({ title, items = [], onCardClick }) => {
           )}
         </div>
 
-        {/* Right Navigation Button */}
         <button
           onClick={nextSlide}
           className="absolute right-2 z-20 bg-gray-900 hover:bg-gray-800 text-white text-2xl p-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300"

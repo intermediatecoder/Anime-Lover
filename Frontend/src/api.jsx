@@ -2,7 +2,6 @@ import axios from "axios";
 
 const API_BASE_URL = "http://localhost:5000"; // Backend URL
 
-// 🔵 **Sign Up API**
 export const signup = async (name, email, username, password) => {
   try {
     const res = await axios.post(`${API_BASE_URL}/signup`, {
@@ -17,7 +16,6 @@ export const signup = async (name, email, username, password) => {
   }
 };
 
-// 🔴 **Login API**
 export const login = async (username, password) => {
   try {
     const res = await axios.post(`${API_BASE_URL}/login`, {
@@ -31,7 +29,6 @@ export const login = async (username, password) => {
   }
 };
 
-// 🎭 **Fetch Server-Driven UI (SDUI)**
 export const fetchUI = async () => {
   try {
     const token = localStorage.getItem("token");
@@ -46,7 +43,6 @@ export const fetchUI = async () => {
   }
 };
 
-// 🚪 **Logout**
 export const logout = () => {
   localStorage.removeItem("token");
 };

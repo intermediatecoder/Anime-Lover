@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Banner from "../components/Banner";
 import Carousel from "../components/Carousel";
-import Modal from "../components/Modal"; // Import Modal
+import Modal from "../components/Modal";
 import Header from "../components/Header";
 
 const Dashboard = () => {
   const [uiData, setUiData] = useState(null);
-  const [selectedAnime, setSelectedAnime] = useState(null); // Store selected anime for modal
+  const [selectedAnime, setSelectedAnime] = useState(null);
+  const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,8 +18,6 @@ const Dashboard = () => {
         navigate("/");
         return;
       }
-
-      console.log("CALLED!");
 
       try {
         const res = await fetch("http://localhost:5000/ui", {
@@ -40,6 +39,24 @@ const Dashboard = () => {
     fetchData();
   }, [navigate]);
 
+  useEffect(() => {
+    if (!uiData) return;
+
+    const bannerSection = uiData.sections.find(
+      (section) => section.type === "banner"
+    );
+
+    if (bannerSection) {
+      const interval = setInterval(() => {
+        setCurrentBannerIndex((prevIndex) =>
+          prevIndex === bannerSection.content.length - 1 ? 0 : prevIndex + 1
+        );
+      }, 3000);
+
+      return () => clearInterval(interval);
+    }
+  }, [uiData]);
+
   return (
     <div className="bg-black text-white min-h-screen">
       {uiData ? (
@@ -48,18 +65,22 @@ const Dashboard = () => {
 
           {uiData.sections.map((section, index) =>
             section.type === "banner" ? (
-              <Banner key={index} data={section.content[0]} />
+              <Banner
+                key={index}
+                data={section.content[currentBannerIndex]} // Auto-sliding banner
+              />
             ) : (
               <Carousel
                 key={index}
                 title={section.title}
                 items={section.items}
-                onCardClick={(anime) => setSelectedAnime(anime)} // Pass click handler
+                onCardClick={(anime) => {
+                  setSelectedAnime(anime);
+                }}
               />
             )
           )}
 
-          {/* Show Modal if an anime is selected */}
           {selectedAnime && (
             <Modal
               anime={selectedAnime}
