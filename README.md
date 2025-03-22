@@ -5,19 +5,19 @@
 1. Clone the repository
 
 ```bash
-git clone https://github.com/intermediatecoder/Anime-Lover.git
+git clone https://github.com/intermediatecoder/anime-sdui.git
 ```
 
 or (with SSH)
 
 ```bash
-git clone git@github.com:intermediatecoder/Anime-Lover.git
+git clone git@github.com:intermediatecoder/anime-sdui.git
 ```
 
 2. Change directory
 
 ```bash
-cd Anime-Lover
+cd anime-sdui
 ```
 
 3. To run the backend
